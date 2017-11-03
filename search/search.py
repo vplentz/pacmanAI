@@ -124,7 +124,25 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
   "Search the node of least total cost first. "
   "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+  start = problem.getStartState()
+  exploredStates = []
+  frontier = util.PriorityQueue()
+  frontier.push((start, []),0)
+  while not frontier.isEmpty():
+      vertex, path = frontier.pop()
+      if problem.isGoalState(vertex):
+          return path
+      if(vertex not in exploredStates):
+          successor = problem.getSuccessors(vertex)
+          for suc in successor:
+              coordinates = suc[0]
+              direction = suc[1]
+              if(coordinates not in exploredStates):
+                  newCost = path + [direction]
+                  frontier.push((coordinates, path + [direction]), problem.getCostOfActions(newCost))
+      exploredStates.append(vertex)
+
+  return path
 
 def nullHeuristic(state, problem=None):
   """
